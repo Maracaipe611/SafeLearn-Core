@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using SafeLearn.Dto;
 using SafeLearn.Usuario;
 
 namespace SafeLearn.Controllers
@@ -16,8 +17,9 @@ namespace SafeLearn.Controllers
         }
 
         [HttpPost()]
-        public async Task<IActionResult> CriarUsuario([FromBody] UsuarioEntity usuario)
+        public async Task<IActionResult> CriarUsuario([FromBody] UsuarioRequest usuarioRequest)
         {
+            var usuario = 
             if (usuario == null) return StatusCode(500);
             var newUser = await this.usuarioService.CreateUsuario(usuario);
             await this.usuarioService.UsuarioSuspeito(usuario.Nome);
