@@ -23,13 +23,21 @@ namespace SafeLearn.Controllers
         [HttpGet()]
         public async Task<IActionResult> Get()
         {
-            TwilioClient.Init(twilioConfiguration.AccountSID, twilioConfiguration.Auth);
-            var call = CallResource.Create(
-            url: new Uri("http://demo.twilio.com/docs/voice.xml"),
-            to: new Twilio.Types.PhoneNumber("+5562993842895"),
-            from: new Twilio.Types.PhoneNumber(twilioConfiguration.Number)
-        );
-            return Ok(call);
+            try
+            {
+                TwilioClient.Init(twilioConfiguration.AccountSID, twilioConfiguration.Auth);
+                var call = CallResource.Create(
+                url: new Uri("http://demo.twilio.com/docs/voice.xml"),
+                to: new Twilio.Types.PhoneNumber("+5562993842895"),
+                from: new Twilio.Types.PhoneNumber(twilioConfiguration.Number)
+                );
+                return Ok(call);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogInformation("Generic exception while getting user: [ex: {ex}]", ex.Message);
+                throw;
+            }
         }
     }
 }
